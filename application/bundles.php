@@ -37,6 +37,5 @@ return array(
 
 	'docs' => array('handles' => 'docs'),
   'bob',
-  'anbu' => array('auto' => true),
 
 );
