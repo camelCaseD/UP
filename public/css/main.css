@@ -132,6 +132,9 @@ div.content .show {
   height: 75%;
   margin-top: 2%; }
 
+p.nav {
+  margin-bottom: 8px; }
+
 .container {
   margin-left: 9.814814814814815%;
   margin-right: 10.092592592592593%;

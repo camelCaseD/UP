@@ -1,5 +1,5 @@
 <?php
-
+Bundle::start('basset');
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -32,10 +32,22 @@
 |
 */
 
-Route::get('/', function()
+Route::get('/', array('as' => 'root', function()
 {
 	return View::make('home.index');
-});
+}));
+
+Route::get('get_involved', array('as' => 'involved', function() {
+  return View::make('pages.involved');
+}));
+
+Route::get('about', array('as' => 'about', function() {
+  return View::make('pages.about');
+}));
+
+Route::get('pictures', array('as' => 'pictures', function() {
+  return View::make('pages.pictures');
+}));
 
 /*
 |--------------------------------------------------------------------------
@@ -92,12 +104,22 @@ Event::listen('500', function()
 
 Route::filter('before', function()
 {
-	// Do stuff before every request to your application...
+	  
 });
 
 Route::filter('after', function($response)
 {
-	// Do stuff after every request to your application...
+	Event::listen('laravel.done', function() {
+    $compiled_dir = Bundle::path('basset').'compiled';
+    $uri = 'http://up.dev/basset';
+    $assets = array('up.css', 'nivo.css');
+    foreach($assets as $asset) {
+      $hash = md5('basset::'.$uri.'/'.$asset);
+      if(!File::exists($compiled_dir.'/'.$hash)) {
+        Basset::compile();
+      }
+    }
+  });
 });
 
 Route::filter('csrf', function()
@@ -108,4 +130,22 @@ Route::filter('csrf', function()
 Route::filter('auth', function()
 {
 	if (Auth::guest()) return Redirect::to('login');
+});
+/*
+/--------------------------------------------------------------------
+/ Basset Routes
+/--------------------------------------------------------------------
+*/
+
+Basset::styles('up', function($basset) {
+  $basset->add('application', 'application.css')
+    ->add('main', 'main.css')
+    ->add('mobile', 'mobile.css')
+    ->compress();
+});
+
+Basset::styles('nivo', function($basset) {
+  $basset->add('nivo-slider', 'nivo-slider.css')
+    ->add('up-nivo', 'up-nivo.css')
+    ->compress();
 });

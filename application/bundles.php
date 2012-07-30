@@ -37,5 +37,9 @@ return array(
 
 	'docs' => array('handles' => 'docs'),
   'bob',
+  'basset' => array(
+    'handles' => 'basset',
+    'auto' => true,
+  ),
 
 );
