@@ -104,7 +104,7 @@ Event::listen('500', function()
 
 Route::filter('before', function()
 {
-	  
+  
 });
 
 Route::filter('after', function($response)
@@ -112,7 +112,7 @@ Route::filter('after', function($response)
 	Event::listen('laravel.done', function() {
     $compiled_dir = Bundle::path('basset').'compiled';
     $uri = 'http://up.dev/basset';
-    $assets = array('up.css', 'nivo.css');
+    $assets = array('up.css', 'nivo.css', 'pg.css', 'jq.js', 'nivo.js', 'pg.js');
     foreach($assets as $asset) {
       $hash = md5('basset::'.$uri.'/'.$asset);
       if(!File::exists($compiled_dir.'/'.$hash)) {
@@ -147,5 +147,27 @@ Basset::styles('up', function($basset) {
 Basset::styles('nivo', function($basset) {
   $basset->add('nivo-slider', 'nivo-slider.css')
     ->add('up-nivo', 'up-nivo.css')
+    ->compress();
+});
+
+Basset::styles('pg', function($basset) {
+  $basset->add('jphotogrid', 'jphotogrid.css')
+    ->compress();
+});
+
+Basset::scripts('jq', function($basset) {
+  $basset->add('jquery', 'jquery.js')
+    ->compress();
+});
+
+Basset::scripts('pg', function($basset) {
+  $basset->add('jphotogrid', 'jphotogrid.min.js')
+    ->add('pgInit', 'pgInit.js')
+    ->compress();
+});
+
+Basset::scripts('nivo', function($basset) {
+  $basset->add('jquery.nivo', 'jquery.nivo.slider.pack.js')
+    ->add('nivoInit', 'nivoInit.js')
     ->compress();
 });
