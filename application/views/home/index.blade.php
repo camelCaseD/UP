@@ -1,5 +1,9 @@
 @layout('templates.main')
 
+@section('title')
+  Unity Project
+@endsection
+
 @section('extra')
   {{ Basset::show('nivo.css') }}
   {{ Basset::show('nivo.js') }}
@@ -15,6 +19,5 @@
       {{ HTML::image('/img/crowdFacingJim.JPG', '') }}
       {{ HTML::image('/img/band.JPG', '') }}
     </div>
-    {{ Request::env() }}
   </div>
 @endsection
