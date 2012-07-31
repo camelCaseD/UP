@@ -1,3 +1,7 @@
+global:
+  env:
+    - LARAVEL_ENV: live
+
 web1:
   shared_writable_dirs:
     - /storage/cache
@@ -19,3 +23,6 @@ web1:
   after_deploy:
     - "rm -f storage/cache/*"
     - "rm -f storage/views/*"
+
+db1:
+  name: up
