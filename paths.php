@@ -24,7 +24,7 @@
 $environments = array(
 
 	'local' => array('http://localhost*', '*.dev'),
-  'live' => 'http://*.pagodabox.com',
+  'live' => '*.pagodabox.com',
 
 );
 
