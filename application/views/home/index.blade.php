@@ -15,5 +15,6 @@
       {{ HTML::image('/img/crowdFacingJim.JPG', '') }}
       {{ HTML::image('/img/band.JPG', '') }}
     </div>
+    {{ Request::env() }}
   </div>
 @endsection
