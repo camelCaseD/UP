@@ -8,6 +8,8 @@
   <link href="http://fonts.googleapis.com/css?family=Londrina+Solid|Montserrat" rel="stylesheet" type="text/css" />
   {{ Basset::show('up.css') }}
   {{ Basset::show('jq.js') }}
+  <link rel="icon" type="image/ico" href="/img/favicon.ico">
+  <link rel="shortcut icon" type="image/ico" href="/img/favicon.ico">
   @yield('extra')
 </head>
 <body>
