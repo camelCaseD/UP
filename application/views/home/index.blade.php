@@ -15,6 +15,6 @@
       {{ HTML::image('/img/crowdFacingJim.JPG', '') }}
       {{ HTML::image('/img/band.JPG', '') }}
     </div>
-    {{ path('storage').'views' }}
+    {{ path('storag').'views' }}
   </div>
 @endsection
