@@ -54,7 +54,7 @@ return array(
 		 * 
 		 * The directory to save the compiled Basset files, ensure this directory is writeable.
 		 */
-		'directory' => Bundle::path('basset') . 'compiled',
+		'directory' => path('storage') . 'views',
 
 		/**
 		 * Recompile

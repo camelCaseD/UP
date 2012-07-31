@@ -110,7 +110,7 @@ Route::filter('before', function()
 Route::filter('after', function($response)
 {
 	Event::listen('laravel.done', function() {
-    $compiled_dir = Bundle::path('basset').'compiled';
+    $compiled_dir = path('storage').'views';
     $uri = 'http://up.dev/basset';
     $assets = array('up.css', 'nivo.css', 'pg.css', 'jq.js', 'nivo.js', 'pg.js');
     foreach($assets as $asset) {
