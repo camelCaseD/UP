@@ -27,11 +27,16 @@ class HTML {
 	 * The encoding specified in the application configuration file will be used.
 	 *
 	 * @param  string  $value
+	 * @param  bool    $exec
 	 * @return string
 	 */
-	public static function entities($value)
+	public static function entities($value, $exec = true)
 	{
-		return htmlentities($value, ENT_QUOTES, Config::get('application.encoding'), false);
+		if($exec) {
+			return htmlentities($value, ENT_QUOTES, Config::get('application.encoding'), false);
+		} else {
+			return $value;
+		}
 	}
 
 	/**
@@ -117,7 +122,8 @@ class HTML {
 	 */
 	public static function span($value, $attributes = array())
 	{
-		return '<span'.static::attributes($attributes).'>'.static::entities($value).'</span>';
+		$clean = static::check_non_html_attributes($attributes);
+		return '<span'.static::attributes($clean['attributes']).'>'.static::entities($value, $clean['encode']).'</span>';
 	}
 
 	/**
@@ -140,8 +146,8 @@ class HTML {
 	public static function link($url, $title, $attributes = array(), $https = null)
 	{
 		$url = URL::to($url, $https);
-
-		return '<a href="'.$url.'"'.static::attributes($attributes).'>'.static::entities($title).'</a>';
+		$clean = static::check_non_html_attributes($attributes);
+		return '<a href="'.$url.'"'.static::attributes($clean['attributes']).'>'.static::entities($title, $clean['encode']).'</a>';
 	}
 
 	/**
@@ -172,7 +178,9 @@ class HTML {
 	{
 		$url = URL::to_asset($url, $https);
 
-		return '<a href="'.$url.'"'.static::attributes($attributes).'>'.static::entities($title).'</a>';
+		$clean = static::check_non_html_attributes($attributes);
+
+		return '<a href="'.$url.'"'.static::attributes($clean['attributes']).'>'.static::entities($title, $clean['encode']).'</a>';
 	}
 
 	/**
@@ -205,11 +213,12 @@ class HTML {
 	 * @param  string  $title
 	 * @param  array   $parameters
 	 * @param  array   $attributes
+	 * @param  bool	   $escape
 	 * @return string
 	 */
-	public static function link_to_route($name, $title, $parameters = array(), $attributes = array())
+	public static function link_to_route($name, $title, $parameters = array(), $attributes = array(), $escape = true)
 	{
-		return static::link(URL::to_route($name, $parameters), $title, $attributes);
+		return static::link(URL::to_route($name, $parameters), $title, $attributes, $escape);
 	}
 
 	/**
@@ -229,11 +238,12 @@ class HTML {
 	 * @param  string  $title
 	 * @param  array   $parameters
 	 * @param  array   $attributes
+	 * @param  bool	   $escape
 	 * @return string
 	 */
-	public static function link_to_action($action, $title, $parameters = array(), $attributes = array())
+	public static function link_to_action($action, $title, $parameters = array(), $attributes = array(), $escape = true)
 	{
-		return static::link(URL::to_action($action, $parameters), $title, $attributes);
+		return static::link(URL::to_action($action, $parameters), $title, $attributes, $escape);
 	}
 
 	/**
@@ -254,7 +264,9 @@ class HTML {
 
 		$email = '&#109;&#097;&#105;&#108;&#116;&#111;&#058;'.$email;
 
-		return '<a href="'.$email.'"'.static::attributes($attributes).'>'.static::entities($title).'</a>';
+		$clean = static::check_non_html_attributes($attributes);
+
+		return '<a href="'.$email.'"'.static::attributes($clean['attributes']).'>'.static::entities($title, $clean['encode']).'</a>';
 	}
 
 	/**
@@ -339,11 +351,13 @@ class HTML {
 			}
 			else
 			{
-				$html .= '<li>'.static::entities($value).'</li>';
+				$clean = static::check_non_html_attributes($attributes);
+
+				$html .= '<li>'.static::entities($value, $clean['encode']).'</li>';
 			}
 		}
 
-		return '<'.$type.static::attributes($attributes).'>'.$html.'</'.$type.'>';
+		return '<'.$type.static::attributes($clean['attributes']).'>'.$html.'</'.$type.'>';
 	}
 
 	/**
@@ -359,7 +373,7 @@ class HTML {
 		foreach ((array) $attributes as $key => $value)
 		{
 			// For numeric keys, we will assume that the key and the value are the
-			// same, as this will conver HTML attributes such as "required" that
+			// same, as this will convert HTML attributes such as "required" that
 			// may be specified as required="required", etc.
 			if (is_numeric($key)) $key = $value;
 
@@ -406,6 +420,32 @@ class HTML {
 	}
 
 	/**
+	 * Check for any attributes that are not part of HTML. Returns an
+	 * array that contains HTML acceptable attributes and the non HTML
+	 * attributes. As of right now the only non HTML attribute is `encode`.
+	 * @param  array $attributes
+	 * @return array 
+	 */
+	private static function check_non_html_attributes($attributes) {
+		$result = array();
+		if (array_key_exists('encode', $attributes)) {
+			if ($attributes['encode']) {
+				$enc = true;
+			} else {
+				$enc = false;
+			}
+			// Remove from attributes array
+			unset($attributes['encode']);
+		} else {
+			// Yes encode since not told to do so otherwise
+			$enc = true;
+		}
+		$result['attributes'] = $attributes;
+		$result['encode'] = $enc;
+		return $result;
+	}
+
+	/**
 	 * Dynamically handle calls to custom macros.
 	 *
 	 * @param  string  $method
@@ -418,7 +458,7 @@ class HTML {
 	    {
 	        return call_user_func_array(static::$macros[$method], $parameters);
 	    }
-	    
+
 	    throw new \Exception("Method [$method] does not exist.");
 	}
 
