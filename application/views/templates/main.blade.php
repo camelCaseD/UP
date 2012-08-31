@@ -18,8 +18,8 @@
     <nav>
       <ul>
         <li class="enders">{{ HTML::link_to_route('root', 'home')}}<div class="first"></div></li>
-        <li>{{ HTML::decode(HTML::link_to_route('involved', '<p class="nav">get</p><p>involved</p>')) }}<div class="middle"></li>
-        <li>{{ HTML::decode(HTML::link_to_route('about', '<p class="nav">about</p><p>us</p>')) }}<div class="last"></div></li>
+        <li>{{ HTML::link_to_route('involved', '<p class="nav">get</p><p>involved</p>', array('encode' => false)) }}<div class="middle"></li>
+        <li>{{ HTML::link_to_route('about', '<p class="nav">about</p><p>us</p>', array('encode' => false)) }}<div class="last"></div></li>
         <li class="enders">{{ HTML::link_to_route('pictures', 'pictures') }}</li>
       </ul>
     </nav>
