@@ -11,7 +11,6 @@ web1:
     - /storage/views
     - /storage/work
     - /application/migrations
-    - /application/config
   document_root: /public
   php_version: 5.3.8
   php_extensions:
