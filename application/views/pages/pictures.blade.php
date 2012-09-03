@@ -19,5 +19,10 @@
     <li>{{ HTML::image('/img/foose.JPG', 'Foose')}}</li>
     <li>{{ HTML::image('/img/pinBall.JPG', 'Pin Ball')}}</li>
     <li>{{ HTML::image('/img/t.JPG', 'Barbaque')}}</li>
+    <li>{{ HTML::image('/img/line.JPG', '')}}</li>
+    <li>{{ HTML::image('/img/game.JPG', '')}}</li>
+    <li>{{ HTML::image('/img/leaders.JPG', '')}}</li>
+    <li>{{ HTML::image('/img/crowdFacingJim.JPG', '')}}</li>
+    <li>{{ HTML::image('/img/band.JPG', '')}}</li>
   </ul>
 @endsection
